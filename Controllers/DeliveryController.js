@@ -213,7 +213,38 @@ const findAllusers=async(req,res)=>{
     }
 }
 
-module.exports = { addMovie,login ,addMoviesToUser,findAllusers};
+const Deletemovie = async (req, res) => {
+    try {
+        const user_id = req.params.id
+         const movie_id=req.params.movie
+        // Find the user by ID
+        const user = await User.findById(user_id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+        // Use $pull to remove the movie with the specified _id
+        user.movies.pull({ _id: movie_id });
+
+        // Save the updated user document
+        await user.save();
+
+        return res.status(200).json({
+            message: "Movie deleted successfully",
+        });
+    } catch (error) {
+        console.error("Error deleting movie:", error);
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message,
+        });
+    }
+};
+
+module.exports = { addMovie,login ,addMoviesToUser,findAllusers,Deletemovie};
 
 
 

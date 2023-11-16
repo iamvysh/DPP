@@ -7,6 +7,7 @@ const delivery=require("../Controllers/DeliveryController")
 router.post("/login",delivery.login)
 router.post("/addmovie",delivery.addMoviesToUser)
 router.get("/details",delivery.findAllusers)
+router.delete("/delete/:id/:movie",delivery.Deletemovie)
 
 
 
