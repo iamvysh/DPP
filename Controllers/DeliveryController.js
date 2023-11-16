@@ -70,10 +70,65 @@ const addMovie = async (req, res) => {
     }
 };
 
+// const addMoviesToUser = async (req, res) => {
+//     try {
+//         const { username, movies } = req.body;
+//         console.log("user name :",username,"movies :",movies)
+
+//         // Create a new user with the provided username
+//         const user = new User({
+//             name: username,
+//             movies: [],
+//             totalAmount: 0,
+//         });
+
+        
+//         let totalSum = 0;
+
+        
+//         for (let i in movies) {
+//             const { movieName, noOfDays } = movies[i];
+
+            
+
+//             // Calculate rent based on noOfDays (assuming Rentprice is fixed at 50)
+//             const rent = noOfDays * 50;
+
+//             // Create a movie object with the provided details
+//             const movieObject = {
+//                 movieName: movieName,
+//                 noOfDays: noOfDays,
+//                 rent: rent,
+//             };
+
+//             // Add the movie object to the user's movies array
+//             user.movies.push(movieObject);
+
+//             // Update totalSum based on the added movie's rent
+//             totalSum += rent;
+//         }
+
+//         // Update the totalAmount based on the calculated totalSum
+//         user.totalAmount += totalSum ;
+
+//         // Save the new user document
+//         await user.save();
+
+//         return res.status(200).json({
+//             message: 'Movies added to user successfully',
+//             // totalSum: totalSum,
+//             totalAmount: user.totalAmount+50
+//         });
+//     } catch (error) {
+//         console.error('Error adding movies to user:', error);
+//         return res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// };
+
+
 const addMoviesToUser = async (req, res) => {
     try {
         const { username, movies } = req.body;
-        console.log("user name :",username,"movies :",movies)
 
         // Create a new user with the provided username
         const user = new User({
@@ -82,23 +137,34 @@ const addMoviesToUser = async (req, res) => {
             totalAmount: 0,
         });
 
-        
         let totalSum = 0;
 
-        
         for (let i in movies) {
             const { movieName, noOfDays } = movies[i];
 
-            
+            console.log("=========  days========", parseInt(noOfDays));
 
             // Calculate rent based on noOfDays (assuming Rentprice is fixed at 50)
             const rent = noOfDays * 50;
 
-            // Create a movie object with the provided details
+            // Create a new Date object with the current date and time
+            let today = new Date();
+            // Add noOfDays to the current date
+            today.setDate(today.getDate() + parseInt(noOfDays)  );
+
+            const year = today.getFullYear();
+            const month = (today.getMonth() + 1).toString().padStart(2, '0');
+            const day = today.getDate().toString().padStart(2, '0');
+
+            const returnDate = `${day}-${month}-${year}`;
+
+
+            // Create a movie object with the provided details and return date
             const movieObject = {
                 movieName: movieName,
                 noOfDays: noOfDays,
                 rent: rent,
+                returnDate: returnDate,
             };
 
             // Add the movie object to the user's movies array
@@ -109,21 +175,29 @@ const addMoviesToUser = async (req, res) => {
         }
 
         // Update the totalAmount based on the calculated totalSum
-        user.totalAmount += totalSum ;
+        user.totalAmount += totalSum;
 
         // Save the new user document
         await user.save();
 
         return res.status(200).json({
-            message: 'Movies added to user successfully',
-            // totalSum: totalSum,
-            totalAmount: user.totalAmount+50
+            message: "Movies added to user successfully",
+            totalAmount: user.totalAmount + 50,
         });
     } catch (error) {
-        console.error('Error adding movies to user:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        console.error("Error adding movies to user:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+  
+
+
+
+
+
+
+
 const findAllusers=async(req,res)=>{
     try {
         const userDetails=await User.find()
