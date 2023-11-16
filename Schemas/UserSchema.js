@@ -4,13 +4,13 @@ const mongoose=require("mongoose")
 const userSchema=new mongoose.Schema({
     name:{
         type:String,
-        required:true,
-        unique:true
-    },
+        // required:true,
+            },
     movies:[
         {
             movieName:{
                 type:String,
+                required:true
             },
             noOfDays:{
                 type:Number,
@@ -19,7 +19,12 @@ const userSchema=new mongoose.Schema({
                 type:Number,
             }
         }
-    ]
+    ],
+    totalAmount:{
+        type:Number,
+        
+        
+    }
     
 })
 

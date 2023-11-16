@@ -27,7 +27,7 @@ app.use(DeliveryRoutes)
 
 
 
-const mongoDB = "mongodb+srv://vyshnavthaithottathil:wMmsjgm4vUWwvlCt@cluster0.az9awdd.mongodb.net/";
+const mongoDB = "mongodb://127.0.0.1/Movies";
 
 // Wait for database to connect, logging an error if there is a problem
 main().catch((err) => console.log(err));
